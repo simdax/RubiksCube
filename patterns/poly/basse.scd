@@ -2,7 +2,7 @@
 (
 s.boot; s.makeGui;
 Pdef(\basse,
-	PAT.matrix.collect({|ev| topEnvironment[\z]=ev; Rest() })
+	Plazy{PAT.matrix}.collect({|ev| topEnvironment[\z]=ev; Rest() })
 );
 Pdef(\mel, { arg degree,dur,instrument,amp;
 	Pbindf( Plazy{topEnvironment[\z] ? ()}.repeat,

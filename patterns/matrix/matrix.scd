@@ -20,8 +20,6 @@ var t=currentEnvironment;
 };
 ~embedInStream={arg s,in; 
 	(Pbind(
-		\instrument, \plucking,
-		\amp, Pkey(\amp)*Pwhite(0.1,0.3),
 		\degree, Pfunc{arg env;
 			var r;
 			r=rot[env.style][env.mtranspose];
@@ -39,5 +37,4 @@ var t=currentEnvironment;
 }.inEnvir(currentEnvironment)
 }
 
-// z=PAT.matrix
-// Plazy{z}.play
+
