@@ -31,7 +31,7 @@ EnvironmentRedirect().envir_(a.putAll((
 		\matrix, {a.res}
 	);
 	[\tailleVecteur,\nb,\seed].includes(k).if{
-		//"dispatché".postln;
+		"dispatché".postln;
 		//update
 		a.doMatrix; a.res; 
 		if(a.list.size>size){a.coun=0}

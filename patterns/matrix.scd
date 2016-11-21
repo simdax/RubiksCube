@@ -1,26 +1,27 @@
 ().make{
 arg rythme=RYTHME.object, melody=PAT.melody;
-var a=rythme.deepCopy, b=melody.deepCopy;
+var a=rythme;
 var rot=Harmonie.rotation;
 var t=currentEnvironment;
-~mel=b;
+~mel=melody;
 ~trans=(
-				a:[\inv,[0],nil],
-				b:[\inv, nil, 0],
-				c:[2,[1],nil]
-			);
+	a:[\inv,[0],nil],
+	b:[\inv, nil, 0],
+	c:[2,[1],nil],
+	z:[{arg x; x},nil,nil]
+);
 ~dict=MyPPE.make{
-	// send "prout" each iteration
-	~degree= Pn(t[\mel], inf, \prout);
-	~seedTranspo=0; //~interT=(..5);
+	// send "trans" each iteration
+	~degree= Pn(t[\mel], inf, \t);
+
 	~style=\classique;
+	~seedTranspo=0; //~interT=(..5);
 	~mtranspose= Pstep(Pseed(~seedTranspo,Prand((..5),4)),4);
 };
-~embedInStream={arg s,in; [s,in].postln;
+~embedInStream={arg s,in; 
 	(Pbind(
 		\instrument, \plucking,
 		\amp, Pkey(\amp)*Pwhite(0.1,0.3),
-		\scale, Scale.at(\major),
 		\degree, Pfunc{arg env;
 			var r;
 			r=rot[env.style][env.mtranspose];
@@ -28,12 +29,15 @@ var t=currentEnvironment;
 		},
 		\trans, Pgate(
 			Pdict(~trans,
-				Pseq([\a, \c, \b, \a],inf)
+				Pseq([\z],inf)
 			).collect{arg item; 
 				~mel.setMatrix(*item)
-			}, inf,\prout),
+			}, inf,\t),
 		//	\stretch, 0.5,
 		\dur,1,//Pn(a),
-	).trace <> ~dict.asPattern).embedInStream(in)
+	) <> ~dict.asPattern).embedInStream(in)
 }.inEnvir(currentEnvironment)
 }
+
+// z=PAT.matrix
+// Plazy{z}.play
