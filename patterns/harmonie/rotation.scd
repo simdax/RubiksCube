@@ -1,0 +1,10 @@
+(
+classique:([0,0,0]!7).slicePut(1,[1,2,6],2),
+classique1:([0,0,0]!7).slicePut(1,[0,1,5],2),
+classique2:([0,0,0]!7).slicePut(1,[0,2,3],2),
+classique3:([0,0,0]!7).slicePut(1,[1,3,4],2),
+classique4:([0,0,0]!7).slicePut(1,[2,4,5],2),
+classique5:([0,0,0]!7).slicePut(1,[3,5,6],2),
+classique6:([0,0,0]!7).slicePut(1,[0,4,5],2),
+modal:([0,0,0]!7)
+)

@@ -2,23 +2,25 @@
 var i={arg x; x.asBoolean.not.asInt};
 var j= _.inject(1, {arg a,b; a *.x b.normalizeSum});
 
-Pdef(\slave, { arg forme,dur;
+//rythme
+// j.([4,[3,3,2],[[1,1],[2,1],1],1])
+
+var k="rythme.scd".loadRelative;
+
+
+Pdef(\slave, { arg forme, dur, cols, rows;
 	var now=thisThread.beats;
-	Pbind(
-		\rows, Plazy{arg env;
-			~transforms.value[forme].rows.asArray.pseq(inf)
-		},
-		\cols, Plazy{arg env;
-			~transforms.value[forme].cols.asArray.pseq(inf)
-		},
+	var deg=~degree.value.copy, copy, top=currentEnvironment; 
+	Pfset({},
+		Pbind(
 		\melodie, Pfunc{ arg env;
-			var deg=~degree.value;
-			try{deg.[env.rows]=deg[env.rows].collect(i)};
-			try{deg.do { |x, indRow|
-				env.cols.asArray.do
-				{ |col| deg[indRow][col]=i.(deg[indRow][col])}
+			copy=deg.deepCopy;
+			try{copy.[rows]=deg[rows].collect(i)};
+			try{copy.do { |x, indRow|
+				cols.value.asArray.do
+				{ |col| copy[indRow][col]=i.(copy[indRow][col])}
 			}};
-			deg
+			copy.postln
 		},
 		\rythme, Pfunc{~rythme.value},
 		\stretch, ~densite,
@@ -33,23 +35,32 @@ Pdef(\slave, { arg forme,dur;
 			// };
 			res.pseq(inf)
 		},
+		)//.trace([\rows,\cols]),
+		{  top.use{~degree.value=copy} }
 	)
 });
-// dispatch the dictionary of transforms for x time
+// Dispatch the dictionary of transforms for x time
 Pdef(\test,{ 
 	Pspawn(
 		Pbind(
+			\index, Pseries(),
 			\forme, ~forme,
 			\dur, ~dur,
+			\rows, Plazy{arg env;
+				~transforms.value[env.forme].rows.asArray.pseq()
+			}.repeat,
+			\cols, Plazy{arg env;
+				~transforms.value[env.forme].cols.asArray.pseq()
+			}.repeat,
 			\method, \seq,
 			\pattern, Pfunc{ arg env;
-				env.dur.postln.sign.switch(
+				env.dur.sign.switch(
 					-1, {Pdef(\slave).fin(~degree.value.maxSizeAtDepth(1)*env.dur.abs)},
 					1,  {Pdef(\slave).finDur(env.dur)}
 				) <> (currentEnvironment.as(Event)++env)
 			},
 			\delta, 0,
-		)
+		)//.trace(\forme)
 	)
 });
 )

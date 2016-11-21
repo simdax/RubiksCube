@@ -26,6 +26,8 @@ void setup(){
   cam = new PeasyCam(this, width/2, height/2, 0, 350);
   cam.setMinimumDistance(50);
   cam.setMaximumDistance(600);
+  //cam.setRightDragHandler(PeasyDragHandler handler);
+  
   theCube = new Cube();
 
   // OSC
@@ -33,6 +35,11 @@ void setup(){
   SCAddr = new NetAddress("127.0.0.1",57120);
   oscP5.plug(this,"send","/test");
 }
+
+// public interface PeasyDragHandler{
+//   //print("caca");
+//   //  public void handleDrag(final double dx, final double dy);
+// }
 
 public void send(int msg){
   OscMessage myMessage = new OscMessage("/test");

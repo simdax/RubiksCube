@@ -1,0 +1,5 @@
++ ArrayedCollection{
+	ns{
+		^this.normalizeSum
+	}
+}

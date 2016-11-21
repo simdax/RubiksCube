@@ -7,9 +7,9 @@ v=
 	(
 		densite:4,
 		dur:2, forme:"a", last:0, repeats:inf,
-		instrument:\cheappiano,
+		instrument:\marimba1,
 		pat:Pdef(\test),
-		quant:0,
+		quant:1,
 		play:{arg s; 
 			var copy=s.copy;
 			var bim=MyPPE();
@@ -27,7 +27,7 @@ v=
 				}
 			};				
 			s[\env]=bim;
-			s[\env].postln.use
+			s[\env].use
 			{
 				s.pat.envir_(s[\env])
 				.fork(s.pat.clock,s.quant);
@@ -36,23 +36,3 @@ v=
 	);
 )
 )
-
-(
-a=v.copy;
-b=a.play;
-)
-(
-a.env.use{
-	~densite=4;
-	~dur=[2,4,-1]; ~forme="ab"
-	// ~transforms.use{
-	// 	~a.use
-	// 	{~cols=[`nil, 1,2,3];
-	// 		~rows=`nil};
-	// 	~b.use
-	// 	{~cols=`nil;
-	// 		~rows=`nil};
-	// }
-}
-)
-

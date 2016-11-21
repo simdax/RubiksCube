@@ -1,8 +1,19 @@
 (
-NetAddr("localhost",12000);
-OSCdef(\io, {arg ... args; args.postln},\test);
-
+s.boot;
 a="../app.scd".loadRelative;
+NetAddr("localhost",12000);
+)
+(
+OSCdef(\io, {arg ... args;
+	args.postln;
+	b[0].mel.postln.use{
+		~transforms.value.use{
+			~a.use{~rows=1}
+		}
+	}
+},\test);
+
+
 ~instr=[
 	\cheappiano,
 	\sos_bell,
@@ -12,14 +23,12 @@ a="../app.scd".loadRelative;
 	\harpsichord1
 ];
 b=();
-b.put(\mels,
-	~instr.collect({|x|
-		var bob, player;
-		 bob=a.copy; player=bob.play;
-		bob[\env].synthDef_(x);
-		player
-	})
-);
+~instr.collect({|x|
+	var bob, player;
+	bob=a.copy; player=bob.play;
+	bob[\env].envir.put(\instrument,x.postln);
+	//	b.put(x, (pl:player,mel:bob[\env]))
+});
 b
 )
 
