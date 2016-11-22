@@ -3,6 +3,7 @@
 
 b=PAT.melody
 
+// simple example
 (
 a=PAT.envirPoly;
 a.io=(appo:[0], dur:[0.5]);
@@ -14,3 +15,8 @@ a.acc=(appo:0,instrument:\cheappiano,degree:[0,[0,2],[2,4]], dur:1,
 )
 )
 
+
+(
+b=PAT.envirPoly;
+b.moi=(type:\sfz)
+)
