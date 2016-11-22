@@ -7,7 +7,8 @@ s.boot; s.makeGui;
 
 Event.addEventType(\appo,{ arg self;
 	var dur,add;
-	~degree=~degree.degreeToKey(~scale?[0,2,4],7);
+	~degree=(~degree+~mtranspose).degreeToKey(~scale?[0,2,4],7);
+	~mtranspose=0;
 	~scale=Scale.at(~mode?\major);
 	~appo ?? {~appo=0};
 	add=Array.series(~appo.abs+1,~appo,~appo.sign.neg);

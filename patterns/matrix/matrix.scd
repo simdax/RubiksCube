@@ -24,7 +24,7 @@ var t=currentEnvironment;
 			var r;
 			r=rot[env.style][env.degree%7].rotate(env.mtranspose);
 			env.degree+((..env.sst).degreeToKey([0,2,4]+r,7));
-		},
+		}.trace,
 		\trans, Pgate(
 			Pdict(~trans,
 				Pseq([\z],inf)

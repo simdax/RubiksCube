@@ -1,34 +1,41 @@
-// generates a placeholder for voices
-EnvironmentRedirect().envir_((
-	base:PAT.matrix,
-	quant:4,
-	forward:{arg s, sel ... args;
-		// creates 
+// generates a placeholderc for voices
+EnvironmentRedirect().make{ arg s;
+	~matrix=PAT.matrix; ~degree=();
+	~epp=EventPatternProxy{Plazy{
+		s[\matrix]
+	}.collect{arg ev; s[\degree]=ev.degree; Rest()}};
+	~mel=Pbind( 
+		\type, \appo,
+		\scale, Pfunc{s[\degree]}
+	);
+	~quant=4;
+	~forward={arg s, sel ... args;
+		// automatic creates 
 		s.put(sel,())
 	}
-)).know_(true)
+}.know_(true)
 .dispatch_{arg k,v,s;
-	// fill a envir with a new pattern
-	if(k==\quant){
-		s.kvdo{arg k,v;
-			Pdef(k).align(v)
+	// fill an envir with a new pattern
+	k.switch(
+		\degree, {}, \epp, {},
+		\quant,{
+			s.kvdo{arg k,v;
+				Pdef(k).align(v)
+			}
+		},{
+			var res=MyPPE().make{
+				// default keys
+				~instrument=\cheappiano;
+				~degree=0; ~dur=1; ~appo=[0];
+				~mtranspose=0;
+			}; res.putAll(v);
+			a.localPut(k,res);
+			/////////////////
+			s.epp.isPlaying.not.if{s.epp.play};
+			// play bass pattern if necessary
+			Pdef(k, s.mel <> res.asPattern)
+			.quant_(s.quant)
+			.play
 		}
-	}{
-		var res=MyPPE().make{
-			~dur=0.25; ~degree=0; ~amp=0.3;
-			~instrument=\cheappiano;
-		}; res.putAll(v);
-		a.localPut(k,res);
-		/////////////////
-		Pdef(\mel).source ?? {PAT.basse};
-		// activate bass
-		Pdef(\basse).isPlaying.not.if{Pdef(\basse).play};
-		// play bass pattern if necessary
-		Pdef(
-			k, Pdef(\mel) <> res.asPattern
-		)
-		.quant_(s.quant)
-		.play
-	}
+	)
 }
-

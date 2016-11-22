@@ -1,5 +1,6 @@
 z=PAT.matrix;
-Plazy{z}.collect(~z=_).play;
+d=Plazy{z}.collect(~z=_);
 
+d.play
 
 ~z
