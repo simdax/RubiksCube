@@ -11,19 +11,19 @@ var t=currentEnvironment;
 	z:[{arg x; x},nil,nil]
 );
 ~dict=MyPPE.make{
-	// send "trans" each iteration
+	// send "t" key for transformation each mel iteration
 	~degree= Pn(t[\mel], inf, \t);
-
-	~style=\classique;
-	~seedTranspo=0; //~interT=(..5);
-	~mtranspose= Pstep(Pseed(~seedTranspo,Prand((..5),4)),4);
+	~style=\allDom;
+	~seedTranspo=0; //~interT =(..5);
+	~mtranspose=0; ~sst=2;
+	//	~mtranspose= Pstep(Pseed(~seedTranspo,Prand((..5),4)),4);
 };
 ~embedInStream={arg s,in; 
 	(Pbind(
 		\degree, Pfunc{arg env;
 			var r;
-			r=rot[env.style][env.mtranspose];
-			env.degree+([0,1,2].degreeToKey([0,2,4]+r,7));
+			r=rot[env.style][env.degree%7].rotate(env.mtranspose);
+			env.degree+((..env.sst).degreeToKey([0,2,4]+r,7));
 		},
 		\trans, Pgate(
 			Pdict(~trans,

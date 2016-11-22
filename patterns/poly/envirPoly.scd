@@ -1,8 +1,9 @@
 // generates a placeholder for voices
 EnvironmentRedirect().envir_((
+	base:PAT.matrix,
 	quant:4,
 	forward:{arg s, sel ... args;
-		// creates a
+		// creates 
 		s.put(sel,())
 	}
 )).know_(true)
@@ -14,18 +15,19 @@ EnvironmentRedirect().envir_((
 		}
 	}{
 		var res=MyPPE().make{
-			~dur=0.25; ~degree=[0];
+			~dur=0.25; ~degree=0; ~amp=0.3;
 			~instrument=\cheappiano;
-			~amp=0.3
 		}; res.putAll(v);
 		a.localPut(k,res);
-		// activate bass
+		/////////////////
 		Pdef(\mel).source ?? {PAT.basse};
+		// activate bass
 		Pdef(\basse).isPlaying.not.if{Pdef(\basse).play};
-		// play pattern
-		Pdef(\mel).copy(k)
+		// play bass pattern if necessary
+		Pdef(
+			k, Pdef(\mel) <> res.asPattern
+		)
 		.quant_(s.quant)
-		.envir_(res.envir.as(Event))
 		.play
 	}
 }
