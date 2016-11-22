@@ -1,9 +1,9 @@
-// generates a placeholderc for voices
+// generates a placeholder for voices
 EnvironmentRedirect().make{ arg s;
 	~matrix=PAT.matrix; ~degree=();
-	~epp=EventPatternProxy{Plazy{
+	~epp=EventPatternProxy(Plazy{
 		s[\matrix]
-	}.collect{arg ev; s[\degree]=ev.degree; Rest()}};
+	}.collect{arg ev; s[\degree]=ev.degree; Rest()});
 	~mel=Pbind( 
 		\type, \appo,
 		\scale, Pfunc{s[\degree]}
@@ -28,8 +28,9 @@ EnvironmentRedirect().make{ arg s;
 				~instrument=\cheappiano;
 				~degree=0; ~dur=1; ~appo=[0];
 				~mtranspose=0;
+				~timbre=\sfz_1001;
 			}; res.putAll(v);
-			a.localPut(k,res);
+			s.localPut(k,res);
 			/////////////////
 			s.epp.isPlaying.not.if{s.epp.play};
 			// play bass pattern if necessary
