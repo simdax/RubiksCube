@@ -1,12 +1,12 @@
 // generates a placeholder for voices
 EnvironmentRedirect().make{ arg s;
-	~matrix=PAT.matrix; ~degree=();
+	~seed=PAT.matrix; ~state=();
 	~epp=EventPatternProxy(Plazy{
-		s[\matrix]
-	}.collect{arg ev; s[\degree]=ev.degree; Rest()});
+		s[\seed]
+	}.collect{arg ev; s[\state]=ev.degree; Rest()});
 	~mel=Pbind( 
 		\type, \appo,
-		\scale, Pfunc{s[\degree]}
+		\scale, Pfunc{s[\state]}
 	);
 	~quant=4;
 	~forward={arg s, sel ... args;
@@ -17,7 +17,8 @@ EnvironmentRedirect().make{ arg s;
 .dispatch_{arg k,v,s;
 	// fill an envir with a new pattern
 	k.switch(
-		\degree, {}, \epp, {},
+		// this is a trick, since degree is just a collector for main pattern epp, it should not be overiden
+		\state, {}, 
 		\quant,{
 			s.kvdo{arg k,v;
 				Pdef(k).align(v)
@@ -28,7 +29,6 @@ EnvironmentRedirect().make{ arg s;
 				~instrument=\cheappiano;
 				~degree=0; ~dur=1; ~appo=[0];
 				~mtranspose=0;
-				~timbre=\sfz_1001;
 			}; res.putAll(v);
 			s.localPut(k,res);
 			/////////////////

@@ -13,8 +13,9 @@ Event.addEventType(\appo,{ arg self;
 	~appo ?? {~appo=0};
 	add=Array.series(~appo.abs+1,~appo,~appo.sign.neg);
 	dur=b.((~swing?[1]).wrapExtend(~appo.abs+1));
-	~instrument.asString.postln.beginsWith("sfz_").postln.if{
-		~type=\sfz; ~inst=~instrument.asString.drop(4).asInt.postln;
+	// tricky system to play with sfz....
+	~instrument.asString.beginsWith("sfz_").if{
+		~type=\sfz; ~inst=~instrument.asString.drop(4).asInt;
 	}{~type=\note};
 	Pbind(\degree,add.iter+~degree, \dur, dur.ns.iter*~dur)
 	.play(protoEvent:currentEnvironment);

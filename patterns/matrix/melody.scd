@@ -1,15 +1,17 @@
 (
 var f=(inv:{arg x; x.asBoolean.not.asInt});
 var a=(
-	tailleVecteur:3,nb:8,  genSeed:{2.rand},
+	//// INTERFACE
+	rows:3,cols:8,  genSeed:{2.rand},
+	//// PRIVATE
 	doMatrix:{arg s; s.use{
-		~matrix=(~seed ? ~genSeed) ! [~tailleVecteur, ~nb]}
+		~matrix=(~seed ? ~genSeed) ! [~rows, ~cols]}
 	},
 	setMatrix:{arg s,val,row,col;
 		if(val.class==Symbol){val=f[val]};
 		s.use{ ~matrix.slicePut(val,row,col) }; s.res;
 	},
-	sstructure: {arg s; s.use{(2.pow(_)) ! ~tailleVecteur}},
+	sstructure: {arg s; s.use{(2.pow(_)) ! ~rows}},
 	res:{arg s;  s.use{
 		~matrix ?? {s.doMatrix};
 		~list=( ~matrix * s.sstructure).sum
@@ -30,7 +32,7 @@ EnvironmentRedirect().envir_(a.putAll((
 	k.switch(
 		\matrix, {a.res}
 	);
-	[\tailleVecteur,\nb,\seed].includes(k).if{
+	[\rows,\cols,\seed].includes(k).if{
 		"dispatché".postln;
 		//update
 		a.doMatrix; a.res; 
