@@ -1,8 +1,9 @@
 // generates a placeholder for voices
 EnvironmentRedirect().make{ arg s;
-	~seed=PAT.matrix; ~state=();
+	~seed=Harmonie.mat;
+	~state=();
 	~epp=EventPatternProxy(Plazy{
-		s[\seed]
+		Pbind(\degree,Plazy{s[\seed]});
 	}.collect{arg ev; s[\state]=ev.degree; Rest()});
 	~mel=Pbind( 
 		\type, \appo,
