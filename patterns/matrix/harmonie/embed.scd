@@ -4,7 +4,7 @@
 		p{loop{
 			var r=(un.res @@ un.coun);
 			un.coun=un.coun+1;
-			in=r.yield
+			in=(r?[0,2,4]).yield
 		}}.embedInStream(in)
 	}
 }

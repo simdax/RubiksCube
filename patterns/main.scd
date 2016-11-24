@@ -1,12 +1,12 @@
 // start a process
 "settings.scd".loadRelative
 
-b=PAT.melody
-
 // simple example
 (
 a=PAT.envirPoly;
 a.io=(appo:[0], dur:[0.5]);
+a.jo=(dur:[0.5,1,2,0.5,0.5]/2, octave:6);
+a.tch=(degree:(10..-5),dur:0.125);
 a.bob=a.io.envir;
 a.bob.mtranspose=[1,2,1];
 a.bob.appo=0;
